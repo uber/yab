@@ -26,7 +26,7 @@ import (
 	"errors"
 	"fmt"
 	"golang.org/x/net/http2"
-	"io/ioutil"
+	"io"
 	"math/rand"
 	"net"
 	"net/http"
@@ -163,7 +163,7 @@ func (h *httpTransport) Call(ctx context.Context, r *Request) (*Response, error)
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		return nil, fmt.Errorf("HTTP call got non-success response code: %v, body: %s", resp.StatusCode, body)
 	}
