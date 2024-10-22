@@ -24,6 +24,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"golang.org/x/net/http2"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -74,7 +75,7 @@ func NewHTTP(opts HTTPOptions) (Transport, error) {
 		opts: opts,
 		// Use independent HTTP clients for each transport.
 		client: &http.Client{
-			Transport: &http.Transport{},
+			Transport: &http2.Transport{},
 		},
 		tracer: opts.Tracer,
 	}, nil
