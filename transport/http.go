@@ -22,11 +22,13 @@ package transport
 
 import (
 	"bytes"
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"golang.org/x/net/http2"
 	"io/ioutil"
 	"math/rand"
+	"net"
 	"net/http"
 	"strconv"
 	"time"
@@ -75,7 +77,13 @@ func NewHTTP(opts HTTPOptions) (Transport, error) {
 		opts: opts,
 		// Use independent HTTP clients for each transport.
 		client: &http.Client{
-			Transport: &http2.Transport{},
+			Transport: &http2.Transport{
+				AllowHTTP: true,
+				DialTLS: func(network, addr string, cfg *tls.Config) (net.Conn, error) {
+					var d net.Dialer
+					return d.Dial(network, addr)
+				},
+			},
 		},
 		tracer: opts.Tracer,
 	}, nil
