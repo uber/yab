@@ -157,6 +157,9 @@ func (h *httpTransport) Call(ctx context.Context, r *Request) (*Response, error)
 		return nil, err
 	}
 
+	req.GetBody = func() (io.ReadCloser, error) {
+		return io.NopCloser(bytes.NewReader(r.Body)), nil
+	}
 	resp, err := h.client.Do(req.WithContext(ctx))
 	if err != nil {
 		return nil, err
