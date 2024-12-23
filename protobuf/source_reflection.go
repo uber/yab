@@ -43,12 +43,15 @@ func NewDescriptorProviderReflection(args ReflectionArgs) (DescriptorProvider, e
 	}
 	r.InitialState(resolver.State{Addresses: peers})
 
-	conn, err := grpc.DialContext(context.Background(),
+	ctx, cancel := context.WithTimeout(context.Background(), args.Timeout)
+	conn, err := grpc.DialContext(
+		ctx,
 		r.Scheme()+":///", // minimal target to dial registered host:port pairs
-		grpc.WithTimeout(args.Timeout),
+		grpc.WithAuthority(args.Service),
 		grpc.WithBlock(),
 		grpc.WithInsecure())
 	if err != nil {
+		cancel()
 		return nil, fmt.Errorf("could not reach reflection server: %s", err)
 	}
 	pbClient := rpb.NewServerReflectionClient(conn)
@@ -65,7 +68,6 @@ func NewDescriptorProviderReflection(args ReflectionArgs) (DescriptorProvider, e
 		routingHeaders.Append(ygrpc.RoutingKeyHeader, args.RoutingKey)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), args.Timeout)
 	metadataContext := metadata.NewOutgoingContext(ctx, routingHeaders)
 	return &grpcreflectSource{
 		client:     grpcreflect.NewClient(metadataContext, pbClient),
