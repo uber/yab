@@ -7,7 +7,7 @@ if [ -z "$VERSION" ]; then
 fi
 
 OSs=(linux darwin)
-ARCHs=(amd64)
+ARCHs=(amd64 arm64)
 
 for OS in "${OSs[@]}"; do
   for ARCH in "${ARCHs[@]}"; do
