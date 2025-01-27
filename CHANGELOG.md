@@ -1,6 +1,10 @@
 Changelog
 =========
 
+# 0.24.0 (2025-01-27)
+* Fix add default authority as service name for reflection call
+* Added arm64 builds to release
+
 # 0.23.0 (2024-06-13)
 * Introduce new options --force-jaeger-sample to ensure yab requests are traced.
 
