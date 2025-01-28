@@ -203,6 +203,7 @@ func TestNewSerializer(t *testing.T) {
 		peers    []string
 		wantErr  string
 	}{
+
 		{
 			msg:      "json with --health",
 			encoding: encoding.JSON,
@@ -345,20 +346,20 @@ func TestNewSerializer(t *testing.T) {
 		{
 			msg: "unspecified encoding with valid grpc peer, unknown symbol",
 			opts: RequestOptions{
-				Procedure: "Bar/Baz",
+				Procedure: "BarJQ/Baz",
 				Timeout:   timeMillisFlag(time.Millisecond * 500),
 			},
 			peers:   []string{"grpc://" + ln.Addr().String()},
-			wantErr: `could not find gRPC service "Bar"`,
+			wantErr: `could not find gRPC service "BarJQ"`,
 		},
 		{
 			msg: "unspecified encoding with valid host:port peer, unknown symbol",
 			opts: RequestOptions{
-				Procedure: "Bar/Baz",
+				Procedure: "BarJQ/Baz",
 				Timeout:   timeMillisFlag(time.Millisecond * 500),
 			},
 			peers:   []string{ln.Addr().String()},
-			wantErr: `could not find gRPC service "Bar"`,
+			wantErr: `could not find gRPC service "BarJQ"`,
 		},
 	}
 

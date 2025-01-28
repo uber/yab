@@ -70,7 +70,7 @@ func TestNewDescriptorProviderFileDescriptorSetBins(t *testing.T) {
 				"../testdata/protobuf/dependencies/main.proto.bin",
 				"../testdata/protobuf/dependencies/other.bin",
 			},
-			errMsg: `included an unresolvable reference`,
+			errMsg: `cannot resolve input`,
 		},
 	}
 	for _, tt := range tests {

@@ -993,7 +993,7 @@ test: 1
 					ServiceName: "foo",
 				},
 			},
-			wantErr: "Failed while reading stream input: could not parse given request body as message of type \"Foo\": Message type Foo has no known field named test_err\n",
+			wantErr: "Failed while reading stream input: could not parse given request body as message of type \"Foo\": message type Foo has no known field named test_err\n",
 		},
 		{
 			desc: "bidirectional streaming with input and long timeout",
@@ -1011,7 +1011,7 @@ test: 1
 				},
 			},
 			expectedInput: []simple.Foo{{Test: 1}},
-			wantErr:       "Failed while reading stream input: could not parse given request body as message of type \"Foo\": Message type Foo has no known field named test_err\n",
+			wantErr:       "Failed while reading stream input: could not parse given request body as message of type \"Foo\": message type Foo has no known field named test_err\n",
 		},
 	}
 	for _, tt := range tests {

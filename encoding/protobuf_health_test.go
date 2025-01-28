@@ -76,7 +76,7 @@ func TestProtobufHealthResponse(t *testing.T) {
 		{
 			desc:    "fail",
 			reqBody: []byte{0x1, 0x2},
-			errMsg:  "invalid field number",
+			errMsg:  "cannot parse invalid wire-format data",
 		},
 	}
 
