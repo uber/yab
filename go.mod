@@ -3,7 +3,6 @@ module github.com/yarpc/yab
 go 1.18
 
 require (
-	github.com/apache/thrift v0.0.0-20161221203622-b2a4d4ae21c7
 	github.com/cactus/go-statsd-client/v5 v5.0.0
 	github.com/casimir/xdg-go v0.0.0-20160329195404-372ccc2180da
 	github.com/ghodss/yaml v1.0.0
@@ -33,7 +32,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gogo/googleapis v1.3.2 // indirect
-	github.com/gogo/protobuf v1.3.1 // indirect
+	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/gogo/status v1.1.0 // indirect
 	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369 // indirect
