@@ -3,7 +3,6 @@ module github.com/yarpc/yab
 go 1.18
 
 require (
-	github.com/apache/thrift v0.0.0-20161221203622-b2a4d4ae21c7
 	github.com/cactus/go-statsd-client/v5 v5.0.0
 	github.com/casimir/xdg-go v0.0.0-20160329195404-372ccc2180da
 	github.com/ghodss/yaml v1.0.0
@@ -14,7 +13,7 @@ require (
 	github.com/stretchr/testify v1.7.1
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
 	github.com/uber/tchannel-go v1.32.1
-	go.uber.org/atomic v1.9.0
+	go.uber.org/atomic v1.10.0
 	go.uber.org/multierr v1.8.0
 	go.uber.org/thriftrw v1.29.2
 	go.uber.org/yarpc v1.60.0
