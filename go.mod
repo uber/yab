@@ -3,7 +3,6 @@ module github.com/yarpc/yab
 go 1.18
 
 require (
-	github.com/apache/thrift v0.0.0-20161221203622-b2a4d4ae21c7
 	github.com/cactus/go-statsd-client/v5 v5.0.0
 	github.com/casimir/xdg-go v0.0.0-20160329195404-372ccc2180da
 	github.com/ghodss/yaml v1.0.0
@@ -11,7 +10,7 @@ require (
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/jhump/protoreflect v0.0.0-20180908113807-a84568470d8a
 	github.com/opentracing/opentracing-go v1.2.0
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.8.2
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
 	github.com/uber/tchannel-go v1.32.1
 	go.uber.org/atomic v1.9.0
@@ -54,6 +53,6 @@ require (
 	golang.org/x/tools v0.1.10 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.0.1-2019.2.3 // indirect
 )
