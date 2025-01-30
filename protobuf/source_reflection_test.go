@@ -196,6 +196,44 @@ func TestReflectionRoutingHeaders(t *testing.T) {
 	}
 }
 
+func TestResolverAlreadyExists(t *testing.T) {
+	ln, err := net.Listen("tcp", "localhost:0")
+	ln2, err := net.Listen("tcp", "127.0.0.1:0")
+	require.NoError(t, err)
+	require.NoError(t, err)
+
+	defer ln.Close()
+	defer ln2.Close()
+
+	s := grpc.NewServer()
+	reflection.Register(s)
+
+	go s.Serve(ln)
+	go s.Serve(ln2)
+
+	// Ensure that all streams are closed by the end of the test.
+	defer s.GracefulStop()
+
+	provider, err := NewDescriptorProviderReflection(ReflectionArgs{
+		Timeout: time.Second,
+		Peers:   []string{ln.Addr().String()},
+		Service: "test",
+	})
+	require.NoError(t, err, "failed to create reflection provider")
+	_, err = provider.FindService("grpc.reflection.v1alpha.ServerReflection")
+	assert.NoError(t, err, "unexpected error")
+
+	provider, err = NewDescriptorProviderReflection(ReflectionArgs{
+		Timeout: time.Second,
+		Peers:   []string{ln2.Addr().String()},
+		Service: "test",
+	})
+	require.NoError(t, err, "failed to create reflection provider")
+	_, err = provider.FindService("grpc.reflection.v1alpha.ServerReflection")
+	assert.NoError(t, err, "unexpected error")
+
+}
+
 func TestE2eErrors(t *testing.T) {
 	ln, err := net.Listen("tcp", "127.0.0.1:0")
 	require.NoError(t, err)
@@ -212,6 +250,7 @@ func TestE2eErrors(t *testing.T) {
 	source, err := NewDescriptorProviderReflection(ReflectionArgs{
 		Timeout: time.Second,
 		Peers:   []string{ln.Addr().String()},
+		Service: "TestE2eErrors",
 	})
 	require.NoError(t, err)
 	defer source.Close()

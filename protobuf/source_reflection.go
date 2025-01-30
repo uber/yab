@@ -3,8 +3,8 @@ package protobuf
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/jhump/protoreflect/desc"
@@ -19,6 +19,8 @@ import (
 	"google.golang.org/grpc/resolver/manual"
 )
 
+var resolverMutex sync.Mutex
+
 // ReflectionArgs are args for constructing a DescriptorProvider that reaches out to a reflection server.
 type ReflectionArgs struct {
 	Caller          string
@@ -32,8 +34,6 @@ type ReflectionArgs struct {
 // NewDescriptorProviderReflection returns a DescriptorProvider that reaches
 // out to a reflection server to access file descriptors.
 func NewDescriptorProviderReflection(args ReflectionArgs) (DescriptorProvider, error) {
-	r, deregisterScheme := GenerateAndRegisterManualResolver()
-	defer deregisterScheme()
 	peers := make([]resolver.Address, len(args.Peers))
 	for i, p := range args.Peers {
 		if strings.Contains(p, "://") {
@@ -41,7 +41,8 @@ func NewDescriptorProviderReflection(args ReflectionArgs) (DescriptorProvider, e
 		}
 		peers[i] = resolver.Address{Addr: p, Type: resolver.Backend}
 	}
-	r.InitialState(resolver.State{Addresses: peers})
+	resolverMutex.Lock()
+	r := GetOrGenerateAndRegisterManualResolver(args.Service, peers)
 
 	ctx, cancel := context.WithTimeout(context.Background(), args.Timeout)
 	conn, err := grpc.DialContext(
@@ -50,6 +51,9 @@ func NewDescriptorProviderReflection(args ReflectionArgs) (DescriptorProvider, e
 		grpc.WithAuthority(args.Service),
 		grpc.WithBlock(),
 		grpc.WithInsecure())
+
+	resolverMutex.Unlock()
+
 	if err != nil {
 		cancel()
 		return nil, fmt.Errorf("could not reach reflection server: %s", err)
@@ -129,9 +133,21 @@ func wrapReflectionError(err error) error {
 	return fmt.Errorf("error in protobuf reflection: %v", err)
 }
 
-func GenerateAndRegisterManualResolver() (*manual.Resolver, func()) {
-	scheme := strconv.FormatInt(time.Now().UnixNano(), 36)
+func GetOrGenerateAndRegisterManualResolver(service string, peers []resolver.Address) *manual.Resolver {
+	scheme := "dest-" + service
+	newState := resolver.State{Addresses: peers}
+
+	rb := resolver.Get(scheme)
+	if rb != nil {
+		if r, ok := rb.(*manual.Resolver); ok {
+			r.InitialState(newState)
+			return r
+		}
+	}
+
 	r := manual.NewBuilderWithScheme(scheme)
 	resolver.Register(r)
-	return r, func() { resolver.UnregisterForTesting(scheme) }
+	r.InitialState(newState)
+
+	return r
 }
