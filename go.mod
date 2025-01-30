@@ -3,7 +3,6 @@ module github.com/yarpc/yab
 go 1.18
 
 require (
-	github.com/apache/thrift v0.0.0-20161221203622-b2a4d4ae21c7
 	github.com/cactus/go-statsd-client/v5 v5.0.0
 	github.com/casimir/xdg-go v0.0.0-20160329195404-372ccc2180da
 	github.com/ghodss/yaml v1.0.0
@@ -49,7 +48,7 @@ require (
 	go.uber.org/net/metrics v1.3.0 // indirect
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220106191415-9b9b3d81d5e3 // indirect
-	golang.org/x/sys v0.0.0-20220403205710-6acee93ad0eb // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.10 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
